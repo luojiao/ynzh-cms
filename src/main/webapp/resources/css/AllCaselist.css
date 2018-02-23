@@ -1,0 +1,60 @@
+body {
+    padding-top: 40px;
+    padding-bottom: 40px;
+    background-color: #eee;
+    max-width: 1120px;
+    margin: 0 auto;
+}
+
+input[type=checkbox] {
+    height: 32px;
+    width: 32px;
+}
+table {
+    margin-top: 30px;
+    table-layout: fixed;
+}
+th,td {
+    /*width: 10px;*/
+    text-align: center;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+.casename {
+    /*width: 100px;*/
+    text-align: left;
+}
+.table>tbody>tr>td {
+    vertical-align: middle;
+}
+.task {
+    margin-top: 35px;
+}
+.task span {
+    color: #265a88;
+    font-size: 18px;
+    line-height: 35px;
+}
+.taskid {
+    width: 345px;
+    float: right;
+    margin-right: 690px;
+}
+.btn-block {
+    width: 345px;
+    margin: auto;
+}
+
+.fltrow {
+    background-color: #5cb85c;
+}
+#flt0_caselists {
+    width: 612px;
+}
+#flt1_caselists, #flt2_caselists, #flt3_caselists {
+    width: 95px;
+}
+#flt4_caselists {
+    width: 42px;
+}

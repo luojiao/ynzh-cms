@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.youzan.pfcase.mapper.CaselistMapper">
+
+    <cache />
+
+    <select id="getAllCaselist" resultType="Caselist">
+        SELECT
+        *
+        FROM caselist
+        WHERE not deleted=1
+        ORDER BY createtime DESC
+    </select>
+
+    <select id="getCaselist" parameterType="int" resultType="Caselist">
+        SELECT
+        *
+        FROM caselist
+        WHERE caseid = ${_parameter}
+    </select>
+
+    <select id="getBelongmoduleas" resultType="String">
+        SELECT DISTINCT
+        belongmodulea
+        FROM caselist
+        WHERE deleted = 0
+    </select>
+
+    <select id="getBelongmodulebs" resultType="String">
+        SELECT DISTINCT
+        belongmoduleb
+        FROM caselist
+        WHERE deleted = 0
+    </select>
+
+    <select id="getBelongmodulecs" resultType="String">
+        SELECT DISTINCT
+        belongmodulec
+        FROM caselist
+        WHERE deleted = 0
+    </select>
+
+
+    <insert id="insertCaselist" parameterType="Caselist">
+        INSERT INTO caselist
+        (casename, belongmodulea, belongmoduleb, belongmodulec, priority, casestep, reviewed, automated, creator, modifier)
+        VALUES
+        (#{casename}, #{belongmodulea}, #{belongmoduleb}, #{belongmodulec}, #{priority}, #{casestep}, #{reviewed}, #{automated}, #{creator}, #{modifier})
+    </insert>
+
+
+    <update id="updateCaselist" parameterType="Caselist">
+        UPDATE caselist SET
+        casename = "${casename}", belongmodulea = "${belongmodulea}", belongmoduleb = "${belongmoduleb}", belongmodulec = "${belongmodulec}",
+        priority = "${priority}", casestep = "${casestep}", reviewed = ${reviewed}, automated = ${automated}, modifier = "${modifier}", updatetime = "${updatetime}"
+        WHERE caseid = #{caseid}
+    </update>
+
+    <update id="delCaselist" parameterType="map">
+        UPDATE caselist SET
+        deleted = 1, modifier = "${modifier}", updatetime = "${updatetime}"
+        WHERE caseid = #{caseid}
+    </update>
+
+    <!--<delete id="delCaselist" parameterType="int">-->
+        <!--DELETE FROM caselist-->
+        <!--WHERE caseid = #{_parameter}-->
+    <!--</delete>-->
+
+</mapper>
