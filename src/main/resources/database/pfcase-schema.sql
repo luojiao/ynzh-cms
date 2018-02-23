@@ -1,5 +1,5 @@
-CREATE DATABASE `pfcase` DEFAULT CHARACTER SET utf8;
-use `pfcase`;
+CREATE DATABASE `cms` DEFAULT CHARACTER SET utf8;
+use `cms`;
 
 
 

@@ -6,7 +6,7 @@ import com.youzan.pfcase.domain.Task;
 import com.youzan.pfcase.domain.UserDetails;
 import com.youzan.pfcase.service.AccountService;
 import com.youzan.pfcase.service.TaskService;
-import org.dozer.Mapper;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -16,7 +16,10 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by sunjun on 16/8/12.
@@ -25,9 +28,6 @@ import java.util.*;
 @RequestMapping("task")
 public class TaskController {
     private List<Task> chartTasks;
-
-    @Autowired
-    protected Mapper beanMapper;
 
     @Autowired
     protected AccountService accountService;
@@ -58,8 +58,9 @@ public class TaskController {
 
             return "task/NewTaskForm";
         }
-
-        Task task = beanMapper.map(form, Task.class);
+        Task task = new Task();
+        BeanUtils.copyProperties(form, task);
+//        Task task = beanMapper.map(form, Task.class);
         UserDetails userDetails = (UserDetails) SecurityContextHolder
                 .getContext().getAuthentication().getPrincipal();
         Account account = userDetails.getAccount();
@@ -94,7 +95,7 @@ public class TaskController {
                 .getContext().getAuthentication().getPrincipal();
         Account account = userDetails.getAccount();
         task.setModifier(account.getUsername());
-        Timestamp timestamp = new Timestamp(new Date().getTime());
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         task.setUpdatetime(timestamp);
         taskService.updateTask(task);
 
@@ -110,7 +111,7 @@ public class TaskController {
         UserDetails userDetails = (UserDetails) SecurityContextHolder
                 .getContext().getAuthentication().getPrincipal();
         String modifier = userDetails.getAccount().getUsername();
-        Timestamp updatetime = new Timestamp(new Date().getTime());
+        Timestamp updatetime = new Timestamp(System.currentTimeMillis());
         taskService.delTask(taskid, modifier, updatetime);
 
         return Integer.toString(taskid);

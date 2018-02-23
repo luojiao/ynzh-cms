@@ -1,8 +1,8 @@
 package com.youzan.pfcase.web.account;
 
+import com.youzan.pfcase.domain.Account;
 import com.youzan.pfcase.service.AccountService;
-import com.youzan.pfcase.web.account.AccountForm.NewAccount;
-import org.dozer.Mapper;
+import com.youzan.pfcase.web.account.AccountVo.NewAccount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -12,6 +12,8 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.groups.Default;
 
@@ -23,9 +25,6 @@ import javax.validation.groups.Default;
 @Controller
 @RequestMapping("account")
 public class AccountController {
-
-    @Autowired
-    protected Mapper beanMapper;
 
     @Autowired
     protected AccountHelper accountHelper;
@@ -42,12 +41,27 @@ public class AccountController {
     }
 
     @ModelAttribute
-    public AccountForm setUpForm() {
-        return new AccountForm();
+    public AccountVo setUpForm() {
+        return new AccountVo();
     }
 
-    @RequestMapping("signonForm")
-    public String signonForm() {
+
+
+    @RequestMapping(value = "signonForm", method = RequestMethod.GET)
+    public String signonFormGet() {
+        return "account/SignonForm";
+    }
+    @RequestMapping(value = "signonForm", method = RequestMethod.POST)
+    public String signonForm(AccountVo accountVo, ModelAndView modelAndView) {
+        if(accountVo == null){
+            return "account/SignonForm";
+        }
+        Account account = accountService.getAccount(accountVo.getUsername());
+        if (account == null){
+            modelAndView.addObject("error","账号不存在");
+        }else if (account.getPassword().equals(accountVo.getPassword())){
+            modelAndView.addObject("error","密码差点就对了");
+        }
         return "account/SignonForm";
     }
 
@@ -57,7 +71,7 @@ public class AccountController {
     }
 
     @RequestMapping("newAccount")
-    public String newAccount(@Validated({ NewAccount.class, Default.class }) AccountForm form, BindingResult result, ModelMap model) {
+    public String newAccount(@Validated({ NewAccount.class, Default.class }) AccountVo form, BindingResult result, ModelMap model) {
         if (result.hasErrors()) {
             return "account/NewAccountForm";
         }

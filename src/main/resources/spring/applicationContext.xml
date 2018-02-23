@@ -57,9 +57,9 @@
           class="org.springframework.security.crypto.password.NoOpPasswordEncoder">
     </bean>
 
-    <bean class="org.dozer.spring.DozerBeanMapperFactoryBean">
-        <property name="mappingFiles"
-                  value="classpath*:dozer/**/*-mapping.xml" />
-    </bean>
+    <!--<bean class="org.dozer.spring.DozerBeanMapperFactoryBean">-->
+        <!--<property name="mappingFiles"-->
+                  <!--value="classpath*:dozer/**/*-mapping.xml" />-->
+    <!--</bean>-->
 
 </beans>

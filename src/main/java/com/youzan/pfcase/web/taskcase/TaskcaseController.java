@@ -3,7 +3,6 @@ package com.youzan.pfcase.web.taskcase;
 import com.youzan.pfcase.mapper.TaskcaseMapper;
 import com.youzan.pfcase.service.AccountService;
 import com.youzan.pfcase.service.TaskService;
-import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,8 +16,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("taskcase")
 public class TaskcaseController {
 
-    @Autowired
-    protected Mapper beanMapper;
 
     @Autowired
     protected AccountService accountService;

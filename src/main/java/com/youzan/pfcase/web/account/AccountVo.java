@@ -6,7 +6,7 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Email;
 
-public class AccountForm {
+public class AccountVo {
     public static interface NewAccount {
 
     }
@@ -15,7 +15,11 @@ public class AccountForm {
 
     }
 
-    @NotNull(groups = NewAccount.class)
+    public static interface LoginAccount{
+
+    }
+
+    @NotNull(groups = {NewAccount.class,LoginAccount.class})
     @Null(groups = EditAccount.class)
     @Size(min = 1, max = 25)
     private String username;
@@ -31,12 +35,12 @@ public class AccountForm {
     private String repeatedPassword;
 
 
-    @NotNull
+    @NotNull(groups = NewAccount.class)
     @Size(min = 1, max = 80)
     @Email
     private String email;
 
-    @NotNull
+    @NotNull(groups = NewAccount.class)
     private String role;
 
     public String getUsername() {

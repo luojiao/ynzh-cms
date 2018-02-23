@@ -9,12 +9,12 @@ public class PasswordEqualsValidator implements Validator {
 
     @Override
     public boolean supports(Class<?> clazz) {
-        return com.youzan.pfcase.web.account.AccountForm.class.isAssignableFrom(clazz);
+        return AccountVo.class.isAssignableFrom(clazz);
     }
 
     @Override
     public void validate(Object target, Errors errors) {
-        com.youzan.pfcase.web.account.AccountForm form = (com.youzan.pfcase.web.account.AccountForm) target;
+        AccountVo form = (AccountVo) target;
         String password = form.getPassword();
         String repeatedPassword = form.getRepeatedPassword();
         if (password == null || repeatedPassword == null) {

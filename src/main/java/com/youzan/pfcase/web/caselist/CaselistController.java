@@ -7,7 +7,7 @@ import com.youzan.pfcase.domain.UserDetails;
 import com.youzan.pfcase.service.CaselistService;
 import com.youzan.pfcase.service.TaskService;
 import com.youzan.pfcase.service.TaskcaseService;
-import org.dozer.Mapper;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.sql.Timestamp;
-import java.util.Date;
 
 /**
  * Created by sunjun on 16/8/12.
@@ -25,9 +24,6 @@ import java.util.Date;
 @Controller
 @RequestMapping("caselist")
 public class CaselistController {
-
-    @Autowired
-    protected Mapper beanMapper;
 
     @Autowired
     protected CaselistService caselistService;
@@ -75,7 +71,9 @@ public class CaselistController {
         if (result.hasErrors()) {
             return "caselist/NewCaselistForm";
         }
-        Caselist caselist = beanMapper.map(form, Caselist.class);
+
+        Caselist caselist = new Caselist();
+        BeanUtils.copyProperties(form, caselist);
         UserDetails userDetails = (UserDetails) SecurityContextHolder
                 .getContext().getAuthentication().getPrincipal();
         Account account = userDetails.getAccount();
@@ -114,7 +112,7 @@ public class CaselistController {
                 .getContext().getAuthentication().getPrincipal();
         Account account = userDetails.getAccount();
         caselist.setModifier(account.getUsername());
-        Timestamp timestamp = new Timestamp(new Date().getTime());
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         caselist.setUpdatetime(timestamp);
 
         caselistService.updateCaselist(caselist);
@@ -130,7 +128,7 @@ public class CaselistController {
         UserDetails userDetails = (UserDetails) SecurityContextHolder
                 .getContext().getAuthentication().getPrincipal();
         String modifier = userDetails.getAccount().getUsername();
-        Timestamp updatetime = new Timestamp(new Date().getTime());
+        Timestamp updatetime = new Timestamp(System.currentTimeMillis());
         caselistService.delCaselist(caseid, modifier, updatetime);
 
         return Integer.toString(caseid);
